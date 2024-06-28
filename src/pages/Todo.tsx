@@ -1,9 +1,13 @@
-const ComponentName = () => {
+import TodoContainer from '@/components/Todo/TodoContainer'
+import Container from '@/components/ui/Container'
+
+const Todo = () => {
   return (
-    <div>
-      <h1>My Todo List</h1>
-    </div>
+    <Container>
+      <h1 className='text-center text-3xl font-semibold my-10'>My Todo List</h1>
+      <TodoContainer />
+    </Container>
   )
 }
 
-export default ComponentName
+export default Todo
