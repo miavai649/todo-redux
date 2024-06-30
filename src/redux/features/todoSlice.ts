@@ -28,17 +28,24 @@ const todoSlice = createSlice({
     },
     toggleComplete: (state, action: PayloadAction<string>) => {
       const task = state.todos.find((todo) => todo.id === action.payload)
-      console.log('🚀 ~ task:', task)
 
       task!.isCompleted = !task?.isCompleted
 
       state.todos = state.todos.sort(
         (a, b) => (a.isCompleted ? 1 : 0) - (b.isCompleted ? 1 : 0)
       )
+    },
+    updateTodo: (state, action: PayloadAction<TTodo>) => {
+      const task = state.todos.find((todo) => todo.id === action.payload.id)
+
+      task!.title = action.payload.title
+      task!.description = action.payload.description
+      task!.priority = action.payload.priority
     }
   }
 })
 
-export const { addTodo, removeTodo, toggleComplete } = todoSlice.actions
+export const { addTodo, removeTodo, toggleComplete, updateTodo } =
+  todoSlice.actions
 
 export default todoSlice.reducer

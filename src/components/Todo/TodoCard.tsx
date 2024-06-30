@@ -1,16 +1,24 @@
 import { useAppDispatch } from '@/redux/hook'
-import { EditIcon, TrashIcon } from '../Svg/Svg'
+import { TrashIcon } from '../Svg/Svg'
 import { Button } from '../ui/button'
 import { removeTodo, toggleComplete } from '@/redux/features/todoSlice'
+import UpdateTodoModal from './UpdateTodoModel'
 
 type TTodoCardProps = {
   id: string
   title: string
   description: string
   isCompleted?: boolean
+  priority: string
 }
 
-const TodoCard = ({ id, title, description, isCompleted }: TTodoCardProps) => {
+const TodoCard = ({
+  id,
+  title,
+  description,
+  isCompleted,
+  priority
+}: TTodoCardProps) => {
   const dispatch = useAppDispatch()
 
   const toggleState = () => {
@@ -34,14 +42,18 @@ const TodoCard = ({ id, title, description, isCompleted }: TTodoCardProps) => {
           <p className='text-red-500'>Pending</p>
         )}
       </div>
+      <p>{priority}</p>
       <p>{description}</p>
       <div className='space-x-5'>
         <Button onClick={() => dispatch(removeTodo(id))} className='bg-red-500'>
           <TrashIcon />
         </Button>
-        <Button className='bg-[#5c53fe]'>
-          <EditIcon />
-        </Button>
+        <UpdateTodoModal
+          id={id}
+          title={title}
+          description={description}
+          priority={priority}
+        />
       </div>
     </div>
   )
