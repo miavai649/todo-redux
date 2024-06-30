@@ -23,7 +23,7 @@ const TodoFilter = () => {
         <DropdownMenuLabel>Filter by priority</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuRadioGroup value={position} onValueChange={setPosition}>
-          <DropdownMenuRadioItem value='heigh'>Heigh</DropdownMenuRadioItem>
+          <DropdownMenuRadioItem value='high'>High</DropdownMenuRadioItem>
           <DropdownMenuRadioItem value='medium'>Medium</DropdownMenuRadioItem>
           <DropdownMenuRadioItem value='low'>Low</DropdownMenuRadioItem>
         </DropdownMenuRadioGroup>

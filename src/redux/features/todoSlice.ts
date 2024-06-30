@@ -4,6 +4,7 @@ type TTodo = {
   id: string
   title: string
   description: string
+  priority: string
   isCompleted?: boolean
 }
 
@@ -22,12 +23,22 @@ const todoSlice = createSlice({
     addTodo: (state, action: PayloadAction<TTodo>) => {
       state.todos.push({ ...action.payload, isCompleted: false })
     },
-    removeTodo: (state, action) => {
+    removeTodo: (state, action: PayloadAction<string>) => {
       state.todos = state.todos.filter((todo) => todo.id !== action.payload)
+    },
+    toggleComplete: (state, action: PayloadAction<string>) => {
+      const task = state.todos.find((todo) => todo.id === action.payload)
+      console.log('🚀 ~ task:', task)
+
+      task!.isCompleted = !task?.isCompleted
+
+      state.todos = state.todos.sort(
+        (a, b) => (a.isCompleted ? 1 : 0) - (b.isCompleted ? 1 : 0)
+      )
     }
   }
 })
 
-export const { addTodo, removeTodo } = todoSlice.actions
+export const { addTodo, removeTodo, toggleComplete } = todoSlice.actions
 
 export default todoSlice.reducer
