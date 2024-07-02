@@ -9,9 +9,18 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger
 } from '../ui/dropdown-menu'
+import { useAppDispatch } from '@/redux/hook'
+import { filterTodo } from '@/redux/features/todoSlice'
 
 const TodoFilter = () => {
-  const [position, setPosition] = useState('bottom')
+  const [priority, setPriority] = useState('all')
+  const dispatch = useAppDispatch()
+
+  const handlePriority = (newPriority: string) => {
+    dispatch(filterTodo(newPriority))
+    setPriority(newPriority)
+  }
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -22,7 +31,8 @@ const TodoFilter = () => {
       <DropdownMenuContent className='w-56'>
         <DropdownMenuLabel>Filter by priority</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuRadioGroup value={position} onValueChange={setPosition}>
+        <DropdownMenuRadioGroup value={priority} onValueChange={handlePriority}>
+          <DropdownMenuRadioItem value='all'>All</DropdownMenuRadioItem>
           <DropdownMenuRadioItem value='high'>High</DropdownMenuRadioItem>
           <DropdownMenuRadioItem value='medium'>Medium</DropdownMenuRadioItem>
           <DropdownMenuRadioItem value='low'>Low</DropdownMenuRadioItem>

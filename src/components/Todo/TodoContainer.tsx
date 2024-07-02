@@ -1,10 +1,19 @@
-import { useAppSelector } from '@/redux/hook'
 import AddTodoModel from './AddTodoModel'
 import TodoCard from './TodoCard'
 import TodoFilter from './TodoFilter'
+import { useGetTodosQuery } from '@/redux/api/api'
 
 const TodoContainer = () => {
-  const { todos } = useAppSelector((state) => state.todos)
+  // * FROM RTQ QUERY
+  const { data: filteredTodo, isError, isLoading } = useGetTodosQuery(undefined)
+  console.log('🚀 ~ TodoContainer ~ data:', filteredTodo?.data)
+
+  // * FROM REDUX STATE
+  // const { filteredTodo } = useAppSelector((state) => state.todos)
+
+  if (isLoading) return <p>Loading...</p>
+
+  if (isError) return <p>Error :(</p>
 
   return (
     <div>
@@ -14,10 +23,10 @@ const TodoContainer = () => {
       </div>
       <div className='bg-primary-gradient w-full rounded-xl p-[5px]'>
         <div className='bg-white h-full w-full rounded-lg p-5 space-y-3'>
-          {todos.length ? (
+          {filteredTodo?.data?.length ? (
             <>
-              {todos.map((todo) => (
-                <TodoCard key={todo.id} {...todo} />
+              {filteredTodo?.data?.map((todo) => (
+                <TodoCard key={todo._id} {...todo} />
               ))}
             </>
           ) : (
