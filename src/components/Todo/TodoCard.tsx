@@ -1,4 +1,4 @@
-import { useToggleTodoMutation } from '@/redux/api/api'
+import { useDeleteTodoMutation, useToggleTodoMutation } from '@/redux/api/api'
 import { TrashIcon } from '../Svg/Svg'
 import { Button } from '../ui/button'
 import UpdateTodoModal from './UpdateTodoModel'
@@ -22,6 +22,7 @@ const TodoCard = ({
   // const dispatch = useAppDispatch()
 
   const [toggleComplete] = useToggleTodoMutation()
+  const [deleteTodo] = useDeleteTodoMutation()
 
   const toggleState = () => {
     const taskData = {
@@ -40,6 +41,10 @@ const TodoCard = ({
 
     // ! FOR REDUX SATE
     // dispatch(toggleComplete(_id))
+  }
+
+  const handleDelete = () => {
+    deleteTodo(_id)
   }
 
   return (
@@ -71,9 +76,7 @@ const TodoCard = ({
 
       <p className='flex-[2]'>{description}</p>
       <div className='space-x-5'>
-        <Button
-          // onClick={() => dispatch(removeTodo(_id))}
-          className='bg-red-500'>
+        <Button onClick={handleDelete} className='bg-red-500'>
           <TrashIcon />
         </Button>
         <UpdateTodoModal
