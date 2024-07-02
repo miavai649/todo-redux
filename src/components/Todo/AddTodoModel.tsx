@@ -11,8 +11,6 @@ import {
 import { Input } from '../ui/input'
 import { Label } from '../ui/label'
 import { DialogClose } from '@radix-ui/react-dialog'
-import { useAppDispatch } from '@/redux/hook'
-import { addTodo } from '@/redux/features/todoSlice'
 import {
   Select,
   SelectContent,
@@ -22,25 +20,37 @@ import {
   SelectTrigger,
   SelectValue
 } from '../ui/select'
+import { useAddTodoMutation } from '@/redux/api/api'
 
 const AddTodoModel = () => {
   const [task, setTask] = useState('')
   const [description, setDescription] = useState('')
   const [priority, setPriority] = useState('high')
-  const dispatch = useAppDispatch()
+
+  // ! FOR LOCALLY ADDED TODO INTO REDUX STATE
+  // const dispatch = useAppDispatch()
+
+  // ? FOR SAVING DATA INTO DB USING RTK QUERY
+  const [addTodo, { data, isLoading, isSuccess, isError }] =
+    useAddTodoMutation()
+
+  console.log({ data, isLoading, isSuccess, isError })
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
 
-    const randomString = Math.random().toString(36).substring(2, 7)
-
     const taskDetails = {
-      id: randomString,
       title: task,
       description,
+      isCompleted: false,
       priority
     }
-    dispatch(addTodo(taskDetails))
+
+    // ? FOR SAVING DATA INTO DB USING RTK QUERY
+    addTodo(taskDetails)
+
+    // ! FOR LOCALLY ADDED TODO INTO REDUX STATE
+    // dispatch(addTodo(taskDetails))
   }
 
   return (
@@ -80,7 +90,9 @@ const AddTodoModel = () => {
               />
             </div>
             <div className='grid grid-cols-4 items-center gap-4'>
-              <Label htmlFor='description' className='text-right'></Label>
+              <Label htmlFor='description' className='text-right'>
+                Priority
+              </Label>
               <Select onValueChange={setPriority}>
                 <SelectTrigger className='col-span-3 flex'>
                   <SelectValue placeholder='Select a priority' />

@@ -4,9 +4,16 @@ import TodoFilter from './TodoFilter'
 import { useGetTodosQuery } from '@/redux/api/api'
 
 const TodoContainer = () => {
+  type TTodo = {
+    _id: string
+    title: string
+    description: string
+    priority: string
+    isCompleted?: boolean
+  }
+
   // * FROM RTQ QUERY
   const { data: filteredTodo, isError, isLoading } = useGetTodosQuery(undefined)
-  console.log('🚀 ~ TodoContainer ~ data:', filteredTodo?.data)
 
   // * FROM REDUX STATE
   // const { filteredTodo } = useAppSelector((state) => state.todos)
@@ -25,7 +32,7 @@ const TodoContainer = () => {
         <div className='bg-white h-full w-full rounded-lg p-5 space-y-3'>
           {filteredTodo?.data?.length ? (
             <>
-              {filteredTodo?.data?.map((todo) => (
+              {filteredTodo?.data?.map((todo: TTodo) => (
                 <TodoCard key={todo._id} {...todo} />
               ))}
             </>
