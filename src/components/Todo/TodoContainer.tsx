@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import AddTodoModel from './AddTodoModel'
 import TodoCard from './TodoCard'
 import TodoFilter from './TodoFilter'
@@ -12,8 +13,10 @@ const TodoContainer = () => {
     isCompleted?: boolean
   }
 
+  const [priority, setPriority] = useState('')
+
   // * FROM RTQ QUERY
-  const { data: filteredTodo, isError, isLoading } = useGetTodosQuery(undefined)
+  const { data: filteredTodo, isError, isLoading } = useGetTodosQuery(priority)
 
   // * FROM REDUX STATE
   // const { filteredTodo } = useAppSelector((state) => state.todos)
@@ -26,7 +29,7 @@ const TodoContainer = () => {
     <div>
       <div className='flex justify-between mb-5'>
         <AddTodoModel />
-        <TodoFilter />
+        <TodoFilter priority={priority} setPriority={setPriority} />
       </div>
       <div className='bg-primary-gradient w-full rounded-xl p-[5px]'>
         <div className='bg-white h-full w-full rounded-lg p-5 space-y-3'>
