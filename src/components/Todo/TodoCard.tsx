@@ -1,7 +1,6 @@
-import { useAppDispatch } from '@/redux/hook'
+import { useToggleTodoMutation } from '@/redux/api/api'
 import { TrashIcon } from '../Svg/Svg'
 import { Button } from '../ui/button'
-import { removeTodo, toggleComplete } from '@/redux/features/todoSlice'
 import UpdateTodoModal from './UpdateTodoModel'
 
 type TTodoCardProps = {
@@ -19,16 +18,35 @@ const TodoCard = ({
   isCompleted,
   priority
 }: TTodoCardProps) => {
-  const dispatch = useAppDispatch()
+  // ! FOR REDUX SATE
+  // const dispatch = useAppDispatch()
+
+  const [toggleComplete] = useToggleTodoMutation()
 
   const toggleState = () => {
-    dispatch(toggleComplete(_id))
+    const taskData = {
+      title,
+      description,
+      isCompleted: !isCompleted,
+      priority
+    }
+
+    const options = {
+      id: _id,
+      data: taskData
+    }
+
+    toggleComplete(options)
+
+    // ! FOR REDUX SATE
+    // dispatch(toggleComplete(_id))
   }
 
   return (
     <div className='bg-white p-3 rounded-md flex justify-between items-center border'>
       <input
         className='mr-3'
+        defaultChecked={isCompleted}
         onChange={toggleState}
         type='checkbox'
         name='complete'
@@ -54,7 +72,7 @@ const TodoCard = ({
       <p className='flex-[2]'>{description}</p>
       <div className='space-x-5'>
         <Button
-          onClick={() => dispatch(removeTodo(_id))}
+          // onClick={() => dispatch(removeTodo(_id))}
           className='bg-red-500'>
           <TrashIcon />
         </Button>
