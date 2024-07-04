@@ -9,7 +9,6 @@ import {
   DialogTitle,
   DialogTrigger
 } from '../ui/dialog'
-import { useAppDispatch } from '@/redux/hook'
 import { Label } from '../ui/label'
 import { Input } from '../ui/input'
 import {
@@ -22,7 +21,7 @@ import {
   SelectValue
 } from '../ui/select'
 import { EditIcon } from '../Svg/Svg'
-import { updateTodo } from '@/redux/features/todoSlice'
+import { useUpdateTodoMutation } from '@/redux/api/api'
 
 type TUpdateTodoModelProps = {
   id: string
@@ -40,19 +39,31 @@ const UpdateTodoModal = ({
   const [updateTask, setUpdateTask] = useState(title)
   const [updateDescription, setUpdateDescription] = useState(description)
   const [updatePriority, setUpdatePriority] = useState(priority)
-  const dispatch = useAppDispatch()
+
+  // ? FOR RTQ QUERY
+  const [updateTodo] = useUpdateTodoMutation()
+
+  // ! FOR REDUX SATE
+  // const dispatch = useAppDispatch()
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
 
     const updateTaskDetails = {
-      id,
       title: updateTask,
       description: updateDescription,
       priority: updatePriority
     }
 
-    dispatch(updateTodo(updateTaskDetails))
+    const options = {
+      id,
+      data: updateTaskDetails
+    }
+
+    updateTodo(options)
+
+    // ! FOR REDUX SATE
+    // dispatch(updateTodo(updateTaskDetails))
   }
 
   return (
